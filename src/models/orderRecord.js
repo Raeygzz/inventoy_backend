@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const productSchema = new mongoose.Schema({
+const orderRecordSchema = new mongoose.Schema({
   productName: {
     type: String,
     required: true
@@ -17,26 +17,36 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  productUnit: {
-    type: String,
-    required: true
-  },
   productProfitMargin: {
     type: String,
     required: true
   },
-  productAlert: {
+  dateOfSale: {
+    type: String,
+    required: true,
+  },
+  clientName: {
     type: String,
     required: true
   },
-  productDescription: {
+  clientAddress: {
     type: String,
     required: true
   },
-  // productMarketScale: {
-  //   type: String,
-  //   required: true
-  // },
+  clientPhone: {
+    type: String,
+    required: true    
+  },
+  clientRelatedNote: {
+    type: String,
+  },
+  pendingActivity: {
+    type: String,
+  },
+  expenses: {
+    type: String,
+    required: true
+  },
   createdAt: {
     type: Date,
     required: true,
@@ -48,4 +58,4 @@ const productSchema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('OrderRecord', orderRecordSchema);

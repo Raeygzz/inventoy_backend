@@ -10,11 +10,14 @@ router.post('/create', async (req, res) => {
     productQuantity: req.body.productQuantity,
     productAmount: req.body.productAmount,
     productTotalAmount: req.body.productTotalAmount,
+    productUnit: req.body.productUnit,
+    productProfitMargin: req.body.productProfitMargin,
     productAlert: req.body.productAlert,
     productDescription: req.body.productDescription,
+    createdBy: req.body.createdBy
   });
 
-  if (!product.productName || !product.productQuantity || !product.productAmount || !product.productTotalAmount || !product.productAlert || !product.productDescription) {
+  if (!product.productName || !product.productQuantity || !product.productAmount || !product.productTotalAmount || !product.productUnit || !product.productProfitMargin || !product.productAlert || !product.productDescription || !product.createdBy) {
     return res.status(400).json({ statusCode: 200, status: false, msg: 'Please include all required fields' });
     
   }
@@ -81,14 +84,17 @@ router.put('/:id', async (req, res) => {
   try {
     product = await Product.findById(req.params.id)
     
-    product.productName = req.body.productName
-    product.productQuantity = req.body.productQuantity
-    product.productAmount = req.body.productAmount
-    product.productTotalAmount = req.body.productTotalAmount
-    product.productAlert = req.body.productAlert
-    product.productDescription = req.body.productDescription
+    product.productName = req.body.productName,
+    product.productQuantity = req.body.productQuantity,
+    product.productAmount = req.body.productAmount,
+    product.productTotalAmount = req.body.productTotalAmount,
+    product.productUnit = req.body.productUnit,
+    product.productProfitMargin = req.body.productProfitMargin,
+    product.productAlert = req.body.productAlert,
+    product.productDescription = req.body.productDescription,
+    product.createdBy = req.body.createdBy
     
-    if(!product.productName || !product.productQuantity || !product.productAmount || !product.productTotalAmount || !product.productAlert || !product.productDescription) {
+    if(!product.productName || !product.productQuantity || !product.productAmount || !product.productTotalAmount || !product.productUnit || !product.productProfitMargin || !product.productAlert || !product.productDescription || !product.createdBy) {
       return res.json({ statusCode: 200, status: false, msg: 'Please include all required fields' });
     } 
 

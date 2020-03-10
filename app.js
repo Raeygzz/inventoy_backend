@@ -18,9 +18,10 @@ app.get('/', (req, res) =>
 );
 
 // Users API Routes
-app.use('/api/users', require('./routes/api/users'));
-app.use('/api/category', require('./routes/api/category'));
-app.use('/api/product', require('./routes/api/product'));
+app.use('/api/users', require('./src/routes/api/users'));
+app.use('/api/client', require('./src/routes/api/client'));
+app.use('/api/product', require('./src/routes/api/product'));
+app.use('/api/orderRecord', require('./src/routes/api/orderRecord'));
 
 // 404 not found route
 app.get('/**', (req, res) => {
