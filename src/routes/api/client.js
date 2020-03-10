@@ -16,7 +16,7 @@ router.post('/create', async (req, res) => {
     createdBy: req.body.createdBy
   });
 
-  if (!client.clientName || !client.clientAddress || !client.clientEmail || !client.clientPhone || !client.clientCompanyName || !client.clientRelatedNote || !client.createdBy) {
+  if (!client.clientName || !client.clientAddress || !client.clientPhone || !client.createdBy) {
     return res.status(400).json({ statusCode: 200, status: false, msg: 'Please include all required fields' });
     
   }

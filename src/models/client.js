@@ -10,8 +10,7 @@ const clientSchema = new mongoose.Schema({
     required: true
   },
   clientEmail: {
-    type: String,
-    required: true
+    type: String
   },
   clientPhone: {
     type: String,
@@ -21,12 +20,10 @@ const clientSchema = new mongoose.Schema({
     type: String
   },
   clientCompanyName: {
-    type: String,
-    required: true
+    type: String
   },
   clientRelatedNote: {
     type: String,
-    required: true
   },
   createdAt: {
     type: Date,
