@@ -1,0 +1,20 @@
+{
+  "name": "bhismitah_enterprises",
+  "version": "1.0.0",
+  "description": "backend of bhismitah enterprises",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js"
+  },
+  "author": "Regan Timsina",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
