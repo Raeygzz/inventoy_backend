@@ -8,13 +8,13 @@ router.post('/create', async (req, res) => {
   const user = new User({
     email: req.body.email,
     password: req.body.password,
-    confirmPassword: req.body.confirmPassword
   });
+  const confirmPassword = req.body.confirmPassword;
 
-  if (!user.email || !user.password || !user.confirmPassword) {
+  if (!user.email || !user.password || !confirmPassword) {
     return res.status(400).json({ statusCode: 200, status: false, msg: 'Please include a email or password' });
     
-  } else if(user.password != user.confirmPassword) {
+  } else if(user.password != confirmPassword) {
     return res.status(400).json({ statusCode: 200, status: false, msg: 'Password doesnot match' });
   }
 
@@ -28,7 +28,12 @@ router.post('/create', async (req, res) => {
     }
 
   } catch(err) {
-    if(err) throw err;
+    if(err.keyValue.email) {
+      res.json({ statusCode: 200, status: false, msg: err.keyValue.email + ' User already exists' })
+
+    } else {
+      res.json({ statusCode: 200, status: false, err: err, msg: 'User not saved' })
+    }
   }
 });
 
@@ -52,10 +57,39 @@ router.post('/login', async (req, res) => {
     }
     
   } catch(err) {
-    if(err) throw err;
+    res.json({ statusCode: 200, status: false, err: err, msg: 'No user found.' })
+  }
+})
+
+
+// Change Password
+router.post('/changePassword/:email', async (req, res) => {
+  const userEmail = req.params.email;
+
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+  const confirmNewPassword = req.body.confirmNewPassword;
+
+  if (!oldPassword || !newPassword || !confirmNewPassword) {
+    return res.status(400).json({ statusCode: 200, status: false, msg: 'Please include all required fields' });
+    
+  } else if(newPassword !== confirmNewPassword) {
+    return res.status(400).json({ statusCode: 200, status: false, msg: 'Password doesnot match' });
   }
 
-})
+  try {
+    const newChangePassword = await User.findOneAndUpdate({ email: userEmail, password: oldPassword }, { $set: { password: confirmNewPassword }})
+    if(newChangePassword != null) {
+      res.json({statusCode: 200, status: true, msg: 'Password successfully changed' })
+
+    } else {
+      res.json({ statusCode: 200, status: false, msg: 'Password not changed' })
+    }
+
+  } catch(err) {
+    res.json({ statusCode: 200, status: false, err: err, msg: 'Password not changed' })
+  }
+});
 
 
 module.exports = router;
