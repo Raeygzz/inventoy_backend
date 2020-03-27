@@ -14,6 +14,7 @@ const clientSchema = new mongoose.Schema({
   },
   clientPhone: {
     type: String,
+    unique: true,
     required: true    
   },
   clientAnotherPhone: {

@@ -31,7 +31,12 @@ router.post('/create', async (req, res) => {
     }
 
   } catch(err) {
-    if(err) throw err;
+    if(err.keyValue.clientPhone) {
+      res.json({ statusCode: 200, status: false, msg: 'Client with contact no: ' + err.keyValue.clientPhone + ' already exists' })
+
+    } else {
+      res.json({ statusCode: 200, status: false, err: err, msg: 'Client not saved' })
+    }
   }
 });
 
@@ -50,6 +55,26 @@ router.get('/', async (req, res) => {
 
   } catch {
     if(err) throw err;
+  }
+})
+
+
+// get one client by id
+router.get('/:id', async (req, res) => {
+  let oneClientById;
+
+  try {
+    oneClientById = await Client.findById(req.params.id)
+
+    if(oneClientById != null) {
+      res.json({statusCode: 200, status: true, client: oneClientById })
+
+    } else {
+      res.json({ statusCode: 200, status: false, client: [] })
+    }
+
+  } catch(err) {
+    res.json({ statusCode: 200, status: false, err: err, client: [] })
   }
 })
 

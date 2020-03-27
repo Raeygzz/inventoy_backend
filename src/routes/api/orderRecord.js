@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const OrderRecord = require('../../models/orderRecord');
+const Product = require('../../models/product');
+const Client = require('../../models/client');
 
 
 // Create orderRecord
@@ -55,6 +57,54 @@ router.get('/', async (req, res) => {
 
   } catch(err) {
     res.json({ statusCode: 200, status: false, err: err, orderRecords: [] })
+  }
+})
+
+
+
+// get product and client details for order record
+router.get('/list', async (req, res) => {
+  let productsList;
+  let clientsList;
+
+  try {
+    productsList = await Product.find()
+    clientsList = await Client.find()
+
+    if(productsList != null && clientsList != null) {
+      const params = {
+        productsList: productsList, 
+        clientsList: clientsList
+      }
+      res.json({statusCode: 200, status: true, params: params })
+
+    } else {
+      res.json({ statusCode: 200, status: false, params: [] })
+    }
+
+  } catch(err) {
+    res.json({ statusCode: 200, status: false, err: err, params: [] })
+  }
+})
+
+
+
+// get one order record by id
+router.get('/:id', async (req, res) => {
+  let oneOrderRecordById;
+
+  try {
+    oneOrderRecordById = await OrderRecord.findById(req.params.id)
+
+    if(oneOrderRecordById != null) {
+      res.json({statusCode: 200, status: true, orderRecord: oneOrderRecordById })
+
+    } else {
+      res.json({ statusCode: 200, status: false, orderRecord: [] })
+    }
+
+  } catch(err) {
+    res.json({ statusCode: 200, status: false, err: err, orderRecord: [] })
   }
 })
 

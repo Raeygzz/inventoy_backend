@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../../models/product');
-
+// const imageMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'images/gif'];
 
 // Create Product
 router.post('/create', async (req, res) => {
   const product = new Product({
+    // productImage: req.body.productImage,
     productName: req.body.productName,
     productQuantity: req.body.productQuantity,
     productAmount: req.body.productAmount,
@@ -17,10 +18,22 @@ router.post('/create', async (req, res) => {
     createdBy: req.body.createdBy
   });
 
+  // if(product.productImage != null || product.productImage != '') {
+  //   const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+  //   const productImageValidation = base64regex.test(product.productImage);
+
+  //   if(!productImageValidation) {
+  //     return res.json({ statusCode: 200, status: false, msg: 'Product image is not valid' });
+  //   }
+  // }
+
   if (!product.productName || !product.productQuantity || !product.productAmount || !product.productTotalAmount || !product.productUnit || !product.productProfitMargin || !product.productAlert || !product.productDescription || !product.createdBy) {
     return res.status(400).json({ statusCode: 200, status: false, msg: 'Please include all required fields' });
     
   }
+
+  // saveCover(product, req.body.cover)
+  // saveCover(product, req.body.cover, req.body.coverType)
 
   try {
     const newProduct = await product.save()
@@ -32,7 +45,7 @@ router.post('/create', async (req, res) => {
     }
 
   } catch(err) {
-    if(err) throw err;
+    res.json({ statusCode: 200, status: false, err: err, msg: 'Product not saved' })
   }
 });
 
@@ -51,6 +64,26 @@ router.get('/', async (req, res) => {
 
   } catch {
     if(err) throw err;
+  }
+})
+
+
+// get one product by id
+router.get('/:id', async (req, res) => {
+  let oneProductById;
+
+  try {
+    oneProductById = await Product.findById(req.params.id)
+
+    if(oneProductById != null) {
+      res.json({statusCode: 200, status: true, product: oneProductById })
+
+    } else {
+      res.json({ statusCode: 200, status: false, product: [] })
+    }
+
+  } catch(err) {
+    res.json({ statusCode: 200, status: false, err: err, product: [] })
   }
 })
 
@@ -131,6 +164,19 @@ router.delete('/:id', async (req, res) => {
     res.json({ statusCode: 200, status: false, msg: 'Product not found' })
   }
 })
+
+
+// function saveCover(product, coverEncoded, coverType) {
+//   // if(coverEncoded == null && coverType == null) {
+
+//   // };
+//   // const cover = JSON.parse(coverEncoded)
+//   if(coverEncoded != null && imageMimeTypes.includes(coverType)) {
+//     // product.coverImage = new Buffer.from(coverEncoded, "base64")
+//     product.coverImage = `data:${coverType};charset=utf-8;base64,${coverEncoded.toString('base64')}`
+//     // product.coverImageType = cover.type
+//   }
+// }
 
 
 module.exports = router;
