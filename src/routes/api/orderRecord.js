@@ -71,7 +71,7 @@ router.get('/list', async (req, res) => {
     productsList = await Product.find()
     clientsList = await Client.find()
 
-    if(productsList != null && clientsList != null) {
+    if(productsList.length > 0 && clientsList.length > 0) {
       const params = {
         productsList: productsList, 
         clientsList: clientsList
